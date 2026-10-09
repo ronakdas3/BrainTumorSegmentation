@@ -1,0 +1,56 @@
+{
+  "project_name": "3D BraTS Glioma Segmentation & Bayesian Uncertainty Quantification",
+  "architecture": "SwinUNETR (3D Shifted Window Vision Transformer)",
+  "total_parameters": 63133133,
+  "best_checkpoint": {
+    "file_name": "best_metric_model.pt",
+    "path": "runs/brats_experiment/best_metric_model.pt",
+    "size_bytes": 256368051,
+    "size_mb": 244.49,
+    "sha256": "a3324989edcbf73f840c72cd7c6f6ecff5ecb13b53bc6a05e001fde87229e145",
+    "epoch": 74,
+    "best_validation_mean_dice": 0.8334
+  },
+  "latest_checkpoint": {
+    "file_name": "latest_model.pt",
+    "path": "runs/brats_experiment/latest_model.pt",
+    "size_bytes": 256367098,
+    "size_mb": 244.49,
+    "sha256": "42892bf34d0e1576ba30a09abed6fc27ac3680193071b7601c43327a9c6055a4",
+    "epoch": 100
+  },
+  "hardware_trained_on": {
+    "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+    "compute_capability": "sm_120",
+    "vram_total_gb": 32.6,
+    "cuda_version": "12.8 / 13.0",
+    "pytorch_version": "2.14.1+cu130"
+  },
+  "training_summary": {
+    "total_epochs": 100,
+    "patch_size": [
+      128,
+      128,
+      128
+    ],
+    "feature_size": 48,
+    "optimizer": "AdamW",
+    "learning_rate": 0.0001,
+    "scheduler": "CosineAnnealingLR",
+    "mixed_precision": "AMP (torch.amp.autocast)",
+    "loss_function": "DiceFocalLoss (sigmoid=True)",
+    "patients_trained": 387,
+    "patients_validated": 48,
+    "patients_tested": 49
+  },
+  "final_test_cohort_results": {
+    "mean_dice": 0.8649,
+    "whole_tumor_dice": 0.9176,
+    "tumor_core_dice": 0.8646,
+    "enhancing_tumor_dice": 0.8126,
+    "mean_hd95_mm": 5.72,
+    "whole_tumor_hd95_mm": 5.51,
+    "tumor_core_hd95_mm": 6.26,
+    "enhancing_tumor_hd95_mm": 5.39
+  }
+}

@@ -1,0 +1,46 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+.mypy_cache/
+.pytest_cache/
+
+# Large Datasets & Archives (root data directory only)
+/data/
+archive/
+*.tar
+*.tar.gz
+*.zip
+
+# Model Weights & Checkpoints (>100MB exceeds GitHub push limits)
+*.pt
+*.pth
+*.bin
+saved_checkpoints/*.pt
+runs/**/*.pt
+runs/**/*.nii.gz
+runs/**/logs/
+*.log
+
+# Documentation & study notes (kept local only)
+docs/
+
+# Keep evaluation summary metrics and documentation
+!runs/**/test_metrics.json
+!history/**/test_metrics.json
+!history/**/checkpoint_info.json
+!history/**/training_curves.png
+!history/**/training_history.csv
+!history/**/training_history.json
+!history/**/config_used.yaml
+
+# IDE & Custom Rules
+.vscode/
+.idea/
+.agents
+.agents/rules/_active_profile_*.md

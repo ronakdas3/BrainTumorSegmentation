@@ -1,0 +1,47 @@
+# ==============================================================================
+# BraTS 3D Glioma Segmentation with Swin UNETR & Uncertainty Estimation
+# Config optimized for 32GB - 64GB VRAM GPU (A100 / V100 / RTX 6000 Ada)
+# ==============================================================================
+
+project:
+  name: "BraTS-SwinUNETR-Uncertainty"
+  seed: 42
+  output_dir: "./runs/brats_experiment"
+
+data:
+  data_dir: "./data/BraTS2021"         # Path to extracted BraTS dataset
+  split_json: "./data/splits.json"      # Patient-level split cache
+  train_val_test_ratio: [0.8, 0.1, 0.1]
+  num_workers: 4                        # DataLoader workers
+  cache_rate: 1.0                       # 1.0 caches all data in RAM/GPU if RAM allows; set 0.2-0.5 if RAM < 64GB
+  spatial_size: [128, 128, 128]         # Large 3D patch size (supported easily by 32-64GB GPU)
+  pos_sample_num: 1                     # Ratio of positive (tumor) patches per scan
+  neg_sample_num: 1                     # Ratio of negative (background/healthy) patches
+
+model:
+  name: "SwinUNETR"
+  in_channels: 4                        # 4 MRI sequences: FLAIR, T1, T1ce, T2
+  out_channels: 3                       # 3 target regions: Whole Tumor (WT), Tumor Core (TC), Enhancing Tumor (ET)
+  img_size: [128, 128, 128]
+  feature_size: 48                      # 48 is standard for high-accuracy SwinUNETR
+  use_checkpoint: true                  # Activation checkpointing to conserve VRAM
+  dropout_rate: 0.1                     # Dropout rate for regular training and MC Dropout
+  attn_drop_rate: 0.1
+  pretrained_weights: null              # Path to pretrained MONAI weights (optional)
+
+train:
+  batch_size: 2                         # 2 patches per GPU step (or 4 on 64GB)
+  max_epochs: 100
+  val_interval: 2
+  learning_rate: 1.0e-4
+  min_lr: 1.0e-6
+  weight_decay: 1.0e-5
+  warmup_epochs: 5
+  amp: true                             # Automatic Mixed Precision (torch.cuda.amp)
+  gradient_clip_val: 1.0
+  loss_type: "DiceFocalLoss"            # Optimal for extreme class imbalance in 3D volumes
+
+inference:
+  sw_batch_size: 4                      # Sliding window batch size
+  overlap: 0.5                          # Sliding window overlap ratio (0.5 - 0.7 for high quality)
+  mc_samples: 10                        # Number of forward passes for Monte Carlo Dropout uncertainty
